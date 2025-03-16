@@ -1,13 +1,23 @@
 {
-  "name": "AgentSmartContract",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./packages/agent/agent_smart_contract.js"
-  },
-  "license": "MIT",
-  "dependencies": {
-    "dotenv": "^16.4.7"
-  },
-  "type": "module"
+	"name": "agent-sc",
+	"version": "1.0.0",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node ./packages/agent/agent_smart_contract.js",
+		"lint": "eslint .",
+		"lint:fix": "prettier --write '**/package.json' && eslint . --fix"
+	},
+	"license": "MIT",
+	"dependencies": {
+		"dotenv": "^16.4.7"
+	},
+	"type": "module",
+	"devDependencies": {
+		"@eslint/js": "^9.22.0",
+		"eslint": "^9.22.0",
+		"eslint-plugin-import": "^2.31.0",
+		"eslint-plugin-jsdoc": "^50.6.6",
+		"eslint-plugin-prettier": "^5.2.3",
+		"prettier": "^3.5.3"
+	}
 }
