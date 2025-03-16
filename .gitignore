@@ -1,14 +1,10 @@
 **/.env
 **/.DS_Store
-**/messages_grpc_pb.js
-**/object_grpc_pb.js
 
 dist/
 node_modules/
 
 **/tsconfig.tsbuildinfo
-**/coverage/*
 .vscode/*
 
-**/benchmark-output.txt
 *.log
