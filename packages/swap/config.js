@@ -1,4 +1,4 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -13,5 +13,4 @@ function loadConfig() {
 	};
 }
 
-const config = loadConfig();
-export { config };
+export const config = loadConfig();

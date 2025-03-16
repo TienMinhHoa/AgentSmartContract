@@ -3,11 +3,11 @@ import { ethers } from 'ethers';
 import { logger } from '../logger/index.js';
 
 import { config } from './config.js';
-import FACTORY_ABI from './abis/factory.json';
-import QUOTER_ABI from './abis/quoter.json';
-import SWAP_ROUTER_ABI from './abis/swaprouter.json';
-import POOL_ABI from './abis/pool.json';
-import TOKEN_IN_ABI from './abis/weth.json';
+import FACTORY_ABI from './abis/factory.json' assert { type: 'json' };
+import QUOTER_ABI from './abis/quoter.json' assert { type: 'json' };
+import SWAP_ROUTER_ABI from './abis/swaprouter.json' assert { type: 'json' };
+import POOL_ABI from './abis/pool.json' assert { type: 'json' };
+import TOKEN_IN_ABI from './abis/weth.json' assert { type: 'json' };
 
 // Deployment Addresses
 const UNISWAPV3_FACTORY_CONTRACT_ADDRESS = '0x33128a8fC17869897dcE68Ed026d694621f6FDfD';
