@@ -14,7 +14,7 @@ import {prompt} from './constant_agent.js'
 
 
 const deployTokenAndPoolSchema = z.object({
-  name: z.string().describe(),
+  name: z.string(),
   symbol: z.string(),
   supply: z.string(),
 })
@@ -24,13 +24,13 @@ const swapTokenSchema = z.object({
 const swapTokenTool = tool(
     async (input) => {
         console.log(input.amount);
-        const res = await swapToken(input.a);
+        const res = await swapToken(input.amount);
         console.log(res)
         return res
     },
     {
       name: "Swaper",
-      description: `this function performs the token swap process, 
+      description: `This function performs the token swap process, 
                     converting a specified amount this type of token to another type`,
       schema: swapTokenSchema,
     }
@@ -72,7 +72,7 @@ const memory = new MemorySaver();
 const langgraphAgent = createReactAgent({
   llm: llm,
   prompt:prompt,
-  tools: [swapTokenTool,deployTokenTool],
+  tools: [swapTokenTool, deployTokenTool],
   checkpointSaver: memory,
 });
 
