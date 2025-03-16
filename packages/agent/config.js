@@ -1,4 +1,4 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -7,7 +7,7 @@ dotenv.config();
  */
 function loadConfig() {
 	return {
-		apiKey: process.env.OPENAI_API_KEY || "",
+		apiKey: process.env.OPENAI_API_KEY || '',
 	};
 }
 
