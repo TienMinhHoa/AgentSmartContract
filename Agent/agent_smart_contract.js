@@ -1,4 +1,3 @@
-// Imports
 import dotenv from "dotenv";
 import readline from "readline";
 import { ChatOpenAI } from "@langchain/openai";

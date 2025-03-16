@@ -8,13 +8,13 @@ import POOL_ABI from './abis/pool.json' assert { type: 'json' };
 import TOKEN_IN_ABI from './abis/weth.json' assert { type: 'json' };
 
 // Deployment Addresses
-const POOL_FACTORY_CONTRACT_ADDRESS = '0x33128a8fC17869897dcE68Ed026d694621f6FDfD'
+const UNISWAPV3_FACTORY_CONTRACT_ADDRESS = '0x33128a8fC17869897dcE68Ed026d694621f6FDfD'
 const QUOTER_CONTRACT_ADDRESS = '0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a'
 const SWAP_ROUTER_CONTRACT_ADDRESS = '0x2626664c2603336E57B271c5C0b26F421741e481'
 
 // Provider, Contract & Signer Instances
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL)
-const factoryContract = new ethers.Contract(POOL_FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider);
+const factoryContract = new ethers.Contract(UNISWAPV3_FACTORY_CONTRACT_ADDRESS, FACTORY_ABI, provider);
 const quoterContract = new ethers.Contract(QUOTER_CONTRACT_ADDRESS, QUOTER_ABI, provider)
 const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
 
