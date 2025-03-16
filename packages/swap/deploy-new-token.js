@@ -2,7 +2,7 @@ import { ethers } from 'ethers';
 
 import { logger } from '../logger/index.js';
 
-import SIMPLE_DEPLOYER_ABI from './abis/SimpleDeployerABI.json';
+import SIMPLE_DEPLOYER_ABI from './abis/SimpleDeployerABI.json' assert { type: 'json' };
 import { config } from './config.js';
 
 const provider = new ethers.JsonRpcProvider(config.RPC_URL);
