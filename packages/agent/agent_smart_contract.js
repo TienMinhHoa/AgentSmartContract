@@ -1,19 +1,19 @@
-import readline from "readline";
+import readline from 'readline';
 
-import { ChatOpenAI } from "@langchain/openai";
-import { MemorySaver } from "@langchain/langgraph";
-import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { HumanMessage, AIMessage } from "@langchain/core/messages";
-import term from "terminal-kit";
-import { tool } from "@langchain/core/tools";
-import { z } from "zod";
+import { ChatOpenAI } from '@langchain/openai';
+import { MemorySaver } from '@langchain/langgraph';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { HumanMessage, AIMessage } from '@langchain/core/messages';
+import term from 'terminal-kit';
+import { tool } from '@langchain/core/tools';
+import { z } from 'zod';
 
-import { deployTokenAndPool } from "../swap/deploy-new-token.js";
-import { swapToken } from "../swap/index.js";
-import { logger } from "../logger/index.js";
+import { deployTokenAndPool } from '../swap/deploy-new-token.js';
+import { swapToken } from '../swap/index.js';
+import { logger } from '../logger/index.js';
 
-import { prompt } from "./constant_agent.js";
-import { config } from "./config.js";
+import { prompt } from './constant_agent.js';
+import { config } from './config.js';
 
 const deployTokenAndPoolSchema = z.object({
 	name: z.string(),
@@ -31,29 +31,29 @@ const swapTokenTool = tool(
 		return res;
 	},
 	{
-		name: "Swaper",
+		name: 'Swaper',
 		description: `This function performs the token swap process, 
                     converting a specified amount this type of token to another type`,
 		schema: swapTokenSchema,
-	}
+	},
 );
 
 const deployTokenTool = tool(
 	async (input) => {
 		logger.info(
-			`Start deploying token named ${input.name}, symbol ${input.symbol}, supply ${input.supply}`
+			`Start deploying token named ${input.name}, symbol ${input.symbol}, supply ${input.supply}`,
 		);
 		const res = await deployTokenAndPool(input.name, input.symbol, input.supply);
 		logger.info(res);
 		return res;
 	},
 	{
-		name: "Deployer",
+		name: 'Deployer',
 		description: ` This function is responsible for deploying a new 
                   ERC-20 token along with a liquidity pool on the blockchain 
                   by interacting with a smart contract and It also add this new token to a pool`,
 		schema: deployTokenAndPoolSchema,
-	}
+	},
 );
 
 // Initialize Terminal Kit for better output formatting and visualization
@@ -62,7 +62,7 @@ const tk = term.terminal;
 // Initialize OpenAI LLM
 const llm = new ChatOpenAI({
 	apiKey: config.apiKey,
-	modelName: "gpt-4o-mini",
+	modelName: 'gpt-4o-mini',
 });
 
 // Initialize chat memory (Note: This is in-memory only, not persistent)
@@ -128,12 +128,12 @@ function processChunks(chunk) {
 	 */
 
 	// Check if the chunk contains an agent's message
-	if ("agent" in chunk) {
+	if ('agent' in chunk) {
 		// Iterate over the messages in the chunk
 		for (const message of chunk.agent.messages) {
 			// Check if the message contains tool calls
 			if (
-				"tool_calls" in message.additional_kwargs &&
+				'tool_calls' in message.additional_kwargs &&
 				Array.isArray(message.additional_kwargs.tool_calls)
 			) {
 				// If the message contains tool calls, extract and display an informative message with tool call details
@@ -152,15 +152,15 @@ function processChunks(chunk) {
 
 					// Display an informative message with tool call details
 					tk
-						.colorRgbHex("#00afff")(`\nThe agent is calling the tool `)
-						.bgColorRgbHex("#00afff")
-						.color("black")(`${toolName}`)
-						.bgColor("black")
-						.colorRgbHex("#00afff")(` with the query `)
-						.bgColorRgbHex("#00afff")
-						.color("black")(`${toolInput}`)
-						.bgColor("black")
-						.colorRgbHex("#00afff")(`. Please wait for the agent's answer...\n`);
+						.colorRgbHex('#00afff')(`\nThe agent is calling the tool `)
+						.bgColorRgbHex('#00afff')
+						.color('black')(`${toolName}`)
+						.bgColor('black')
+						.colorRgbHex('#00afff')(` with the query `)
+						.bgColorRgbHex('#00afff')
+						.color('black')(`${toolInput}`)
+						.bgColor('black')
+						.colorRgbHex('#00afff')(`. Please wait for the agent's answer...\n`);
 				});
 			} else {
 				// If the message doesn't contain tool calls, extract and display the agent's answer
@@ -169,10 +169,10 @@ function processChunks(chunk) {
 				const agentAnswer = message.content;
 
 				// Display the agent's answer
-				tk.bgColor("white")
-					.color("black")(`\nAgent:\n${agentAnswer}\n`)
-					.color("white")
-					.bgColor("black");
+				tk.bgColor('white')
+					.color('black')(`\nAgent:\n${agentAnswer}\n`)
+					.color('white')
+					.bgColor('black');
 			}
 		}
 	}
@@ -196,7 +196,7 @@ async function processCheckpoints(checkpoints) {
 	 * - Messages associated with the checkpoint
 	 */
 
-	tk.color("white")("\n==========================================================\n");
+	tk.color('white')('\n==========================================================\n');
 
 	for await (const checkpointTuple of checkpoints) {
 		// Extract key information about the checkpoint
@@ -205,25 +205,25 @@ async function processCheckpoints(checkpoints) {
 		const messages = channel_values.messages || [];
 
 		// Display checkpoint information
-		tk.color("white")("\nCheckpoint:\n");
-		tk.color("black")(`Timestamp: ${ts}\n`);
-		tk.color("black")(`Checkpoint ID: ${id}\n`);
+		tk.color('white')('\nCheckpoint:\n');
+		tk.color('black')(`Timestamp: ${ts}\n`);
+		tk.color('black')(`Checkpoint ID: ${id}\n`);
 
 		// Display checkpoint messages
 		messages.forEach((message) => {
 			if (message instanceof HumanMessage) {
-				tk.color("magenta")(`User: ${message.content}`).color("cyan")(
-					` (Message ID: ${message.id || "N/A"})\n`
+				tk.color('magenta')(`User: ${message.content}`).color('cyan')(
+					` (Message ID: ${message.id || 'N/A'})\n`,
 				);
 			} else if (message instanceof AIMessage) {
-				tk.color("magenta")(`Agent: ${message.content}`).color("cyan")(
-					` (Message ID: ${message.id})\n`
+				tk.color('magenta')(`Agent: ${message.content}`).color('cyan')(
+					` (Message ID: ${message.id})\n`,
 				);
 			}
 		});
 	}
 
-	tk.color("white")("\n==========================================================\n");
+	tk.color('white')('\n==========================================================\n');
 }
 
 // Define the main function
@@ -240,19 +240,19 @@ async function AgentWakeUp() {
 	// Loop until the user chooses to quit the chat
 	while (true) {
 		// Get the user's question and display it in the terminal
-		const userQuestion = await getUserQuestion("\nUser:\n");
+		const userQuestion = await getUserQuestion('\nUser:\n');
 
 		// Check if the user wants to quit the chat
-		if (userQuestion.toLowerCase() === "quit") {
-			tk.bgColor("white").color("black")("\nAgent:\nHave a nice day!\n");
-			tk.bgColor("black").color("white")("\n");
+		if (userQuestion.toLowerCase() === 'quit') {
+			tk.bgColor('white').color('black')('\nAgent:\nHave a nice day!\n');
+			tk.bgColor('black').color('white')('\n');
 			break;
 		}
 
 		// Use the stream method of the LangGraph agent to get the agent's answer
 		const agentAnswer = await langgraphAgent.stream(
 			{ messages: [new HumanMessage({ content: userQuestion })] },
-			{ configurable: { thread_id: "1" } }
+			{ configurable: { thread_id: '1' } },
 		);
 
 		// Process the chunks from the agent
@@ -261,7 +261,7 @@ async function AgentWakeUp() {
 		}
 
 		// List all checkpoints that match a given configuration
-		const checkpoints = memory.list({ configurable: { thread_id: "1" } });
+		const checkpoints = memory.list({ configurable: { thread_id: '1' } });
 		// Process the checkpoints
 		// await processCheckpoints(checkpoints);
 	}
