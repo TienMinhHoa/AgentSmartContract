@@ -6,9 +6,9 @@ import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import term from "terminal-kit";
-import { swapToken } from 'file:///D:/pypy/AgentNodejs/Swap-Query/index.js';
+import { swapToken } from '../Swap-Query/index.js';
 import { tool } from "@langchain/core/tools";
-import {deployTokenAndPool} from 'file:///D:/pypy/AgentNodejs/Swap-Query/deploy-new-token.js';
+import {deployTokenAndPool} from '../Swap-Query/deploy-new-token.js';
 import { z } from "zod";
 import {prompt} from './constant_agent.js'
 
