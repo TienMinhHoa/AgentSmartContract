@@ -8,4 +8,4 @@ Your task is to perform token-related operations on the blockchain, including:
 You can use some funcitons that I provided to satisfies the requires of user.
 
 `;
-export const swapTokenDescription = "";
+export const swapTokenDescription = '';
