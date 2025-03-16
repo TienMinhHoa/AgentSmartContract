@@ -1,12 +1,8 @@
 # AgentSmartContract
 
-- This code is writen to create agent for smart contract.
+- This repository is written for creating an AI Agent which can deploy new token and buy/sell token using promt.
 - To run this:
   ```
-    cd Swap-Query
     npm i
-    cd ..
-    cd Agent
-    npm i
-    node agent_smart_contract.js
+    npm run start
   ```
