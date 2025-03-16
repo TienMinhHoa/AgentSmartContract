@@ -9,8 +9,8 @@ import { tool } from "@langchain/core/tools";
 import { z } from "zod";
 import {prompt} from './constant_agent.js'
 
-import {deployTokenAndPool} from '../../Swap-Query/deploy-new-token.js';
-import { swapToken } from '../../Swap-Query/index.js';
+import {deployTokenAndPool} from '../swap/deploy-new-token.js';
+import { swapToken } from '../swap/index.js';
 
 const deployTokenAndPoolSchema = z.object({
   name: z.string(),

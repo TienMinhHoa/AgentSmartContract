@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./Agent/agent_smart_contract.js"
+    "start": "node ./packages/agent/agent_smart_contract.js"
   },
   "license": "MIT",
   "dependencies": {
