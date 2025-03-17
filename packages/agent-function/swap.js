@@ -14,6 +14,9 @@ const UNISWAPV3_FACTORY_CONTRACT_ADDRESS = '0x33128a8fC17869897dcE68Ed026d694621
 const QUOTER_CONTRACT_ADDRESS = '0x3d4e44Eb1374240CE5F1B871ab261CD16335B76a';
 const SWAP_ROUTER_CONTRACT_ADDRESS = '0x2626664c2603336E57B271c5C0b26F421741e481';
 const WETH_ADDRESS = "0x4200000000000000000000000000000000000006";
+const USDC_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+const cbBTC_ADDRESS = "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf";
+const doginme_ADDRESS = "0x6921B130D297cc43754afba22e5EAc0FBf8Db75b";
 
 // Provider, Contract & Signer Instances
 const provider = new ethers.JsonRpcProvider(config.RPC_URL);
@@ -25,28 +28,23 @@ const factoryContract = new ethers.Contract(
 const quoterContract = new ethers.Contract(QUOTER_CONTRACT_ADDRESS, QUOTER_ABI, provider);
 const signer = new ethers.Wallet(config.PRIVATE_KEY, provider);
 
-// Token Configuration
-// const WETH = {
-// 	chainId: 8453,
-// 	address: '0x4200000000000000000000000000000000000006',
-// 	decimals: 18,
-// 	symbol: 'WETH',
-// 	name: 'Wrapped Ether',
-// 	isToken: true,
-// 	isNative: true,
-// 	wrapped: true,
-// };
-
-// const USDC = {
-// 	chainId: 8543,
-// 	address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
-// 	decimals: 6,
-// 	symbol: 'USDC',
-// 	name: 'USD//C',
-// 	isToken: true,
-// 	isNative: true,
-// 	wrapped: false,
-// };
+/**
+ *
+ */
+const getAddressFromSymbol = (symbol) => {
+	switch (symbol) {
+		case 'WETH':
+			return WETH_ADDRESS;
+		case 'USDC':
+			return USDC_ADDRESS;
+		case 'cbBTC':
+			return cbBTC_ADDRESS;
+		case 'doginme':
+			return doginme_ADDRESS;
+		default:
+			throw new Error('Token not supported');
+	}
+}
 
 /**
  *
@@ -93,6 +91,9 @@ async function getPoolInfo(factoryContract, tokenInAddress, tokenOutAddress) {
 	return { poolContract, fee };
 }
 
+/**
+ *
+ */
 async function getTokenInfo(tokenAddress, provider) {
 	try {
 		const erc20Abi = [
@@ -237,8 +238,10 @@ export async function swapToken(swapAmount, tokenInAddress, tokenOutAddress) {
 	}
 }
 
-swapToken(
-	0.1, // Change amount as needed
-	"0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-	"0x4200000000000000000000000000000000000006",
-) 
+// swapToken(
+// 	0.00001, // Change amount as needed
+// 	"0x4200000000000000000000000000000000000006", // WETH Address
+// 	"0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf", // cbBTC address
+// ) 
+
+// getAddressFromSymbol("WETH");
