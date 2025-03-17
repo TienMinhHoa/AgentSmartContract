@@ -1,0 +1,94 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_poolDeployer",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "deployTokenAndPool",
+    "inputs": [
+      {
+        "name": "name_",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "symbol_",
+        "type": "string",
+        "internalType": "string"
+      },
+      {
+        "name": "initialSupply",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "owner_",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "fee",
+        "type": "uint24",
+        "internalType": "uint24"
+      },
+      {
+        "name": "tick",
+        "type": "int24",
+        "internalType": "int24"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "tokenAddress",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "poolAddress",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "poolDeployer",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract PoolDeployer"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "TokenAndPoolDeployed",
+    "inputs": [
+      {
+        "name": "token",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "pool",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  }
+]

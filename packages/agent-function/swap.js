@@ -91,6 +91,31 @@ async function getPoolInfo(factoryContract, tokenInAddress, tokenOutAddress) {
 	return { poolContract, fee };
 }
 
+async function getTokenInfo(tokenAddress, provider) {
+	try {
+		const erc20Abi = [
+			"function name() view returns (string)",
+			"function symbol() view returns (string)",
+			"function decimals() view returns (uint8)"
+		];
+
+		const tokenContract = new ethers.Contract(tokenAddress, erc20Abi, provider);
+		const [address, name, symbol, decimals] = await Promise.all([
+			tokenAddress,
+			tokenContract.name(),
+			tokenContract.symbol(),
+			tokenContract.decimals()
+		]);
+
+		return { address, name, symbol, decimals };
+	} catch (error) {
+		logger.error(`Error fetching token info for: ${tokenAddress}`, error);
+		throw new Error(`Failed to fetch token info for ${tokenAddress}`);
+	}
+}
+
+
+
 /**
  *
  */
