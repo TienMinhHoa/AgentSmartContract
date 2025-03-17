@@ -91,6 +91,9 @@ async function getPoolInfo(factoryContract, tokenInAddress, tokenOutAddress) {
 	return { poolContract, fee };
 }
 
+/**
+ *
+ */
 async function getTokenInfo(tokenAddress, provider) {
 	try {
 		const erc20Abi = [
