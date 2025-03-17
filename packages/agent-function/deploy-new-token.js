@@ -53,4 +53,4 @@ export async function deployTokenAndPool(name, symbol, supply) {
 	}
 }
 
-deployTokenAndPool("Test Token", "Test Symbol", "1000000");
+// deployTokenAndPool("Test Token", "Test Symbol", "1000000");
