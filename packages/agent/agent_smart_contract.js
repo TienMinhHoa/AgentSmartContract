@@ -8,12 +8,14 @@ import term from 'terminal-kit';
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 
-import { deployTokenAndPool } from '../swap/deploy-new-token.js';
-import { swapToken } from '../swap/index.js';
+import { deployTokenAndPool } from '../agent-function/deploy-new-token.js';
+import { swapToken } from '../agent-function/swap.js';
 import { logger } from '../logger/index.js';
 
 import { prompt } from './constant_agent.js';
+import {getHistoryChat, addHitoryChat} from './agent-memory.js';
 import { config } from './config.js';
+
 
 const deployTokenAndPoolSchema = z.object({
 	name: z.string(),
@@ -22,6 +24,8 @@ const deployTokenAndPoolSchema = z.object({
 });
 const swapTokenSchema = z.object({
 	amount: z.number(),
+	tokenInAddress: z.string(),
+	tokenOutAddress: z.string()
 });
 const swapTokenTool = tool(
 	async (input) => {
@@ -94,8 +98,8 @@ function getUserQuestion(message) {
 
 	// Creating a readline interface for reading lines from the standard input (keyboard)
 	const rl = readline.createInterface({
-		input: process.stdin, // Setting the input stream to the standard input (keyboard)
-		output: process.stdout, // Setting the output stream to the standard output (console)
+		input: process.stdin, 
+		output: process.stdout, 
 	});
 
 	// Returning a Promise that resolves when the user enters something
@@ -230,7 +234,8 @@ async function processCheckpoints(checkpoints) {
 /**
  *
  */
-async function AgentWakeUp() {
+async function AgentWakeUp(id_thread="1") {
+	const history = await getHistoryChat(id_thread)
 	/**
 	 * Runs the main loop of the chat application.
 	 *
@@ -251,8 +256,8 @@ async function AgentWakeUp() {
 
 		// Use the stream method of the LangGraph agent to get the agent's answer
 		const agentAnswer = await langgraphAgent.stream(
-			{ messages: [new HumanMessage({ content: userQuestion })] },
-			{ configurable: { thread_id: '1' } },
+			{ messages: [...history,new HumanMessage({ content: userQuestion })] },
+			{ configurable: { thread_id: 'cache' } },
 		);
 
 		// Process the chunks from the agent
@@ -267,4 +272,4 @@ async function AgentWakeUp() {
 	}
 }
 
-AgentWakeUp();
+AgentWakeUp("test");
