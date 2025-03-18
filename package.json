@@ -9,7 +9,9 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"dotenv": "^16.4.7"
+		"@langchain/langgraph-checkpoint-postgres": "^0.0.4",
+		"dotenv": "^16.4.7",
+		"ethers": "^6.13.5"
 	},
 	"type": "module",
 	"devDependencies": {
