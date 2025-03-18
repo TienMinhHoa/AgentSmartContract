@@ -148,22 +148,6 @@ function processChunks(chunk) {
 async function AgentWakeUp(id_thread="1") {
 	const history = await getHistoryChat(id_thread)
 
-	const llm = new ChatOpenAI({
-		apiKey: config.apiKey,
-		modelName: 'gpt-4o-mini',
-	});
-	
-	// Initialize chat memory (Note: This is in-memory only, not persistent)
-	const memory = new MemorySaver();
-	
-	// Create a LangGraph agent
-	const langgraphAgent = createReactAgent({
-		llm: llm,
-		prompt: prompt,
-		tools: [swapTokenTool, deployTokenTool, addressTool],
-		checkpointSaver: memory,
-	});
-
 	while (true) {
 		const userQuestion = await getUserQuestion('\nUser:\n');
 
@@ -173,6 +157,7 @@ async function AgentWakeUp(id_thread="1") {
 			break;
 		}
 		const cache = {user:userQuestion,system:""}
+		// Use the stream method of the LangGraph agent to get the agent's answer
 		const agentAnswer = await langgraphAgent.stream(
 			{ messages: [...history,new HumanMessage({ content: userQuestion })] },
 			{ configurable: { thread_id: 'cache' } },
@@ -180,7 +165,7 @@ async function AgentWakeUp(id_thread="1") {
 
 		for await (const chunk of agentAnswer) {
 			const response = processChunks(chunk);
-			if (response && response.length > 0){
+			if (response.length > 0){
 				cache.system+=response
 			}
 		}
