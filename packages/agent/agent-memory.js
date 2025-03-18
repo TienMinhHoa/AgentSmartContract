@@ -14,12 +14,9 @@ async function readJsonFile(filePath) {
 
 async function appendToJsonFile(filePath, newData) {
     let oldData = [];
-    let character = "";
     try {
         await fs.access(filePath);
-        let data = JSON.parse(await fs.readFile(filePath, "utf8"));
-        oldData = data["History"];
-        character = data["Personality"]
+        oldData = JSON.parse(await fs.readFile(filePath, "utf8"));
         if (!Array.isArray(oldData)) throw new Error("JSON is in wrong Format");
     } catch (error) {
         console.error("This new chat is saved ");
