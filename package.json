@@ -9,7 +9,8 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"dotenv": "^16.4.7"
+		"dotenv": "^16.4.7",
+		"viem": "^2.23.12"
 	},
 	"type": "module",
 	"devDependencies": {
