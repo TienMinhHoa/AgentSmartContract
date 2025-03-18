@@ -23,17 +23,14 @@ async function writeJsonFile(filePath, data) {
 }
 
 async function appendToJsonFile(filePath, newData) {
-    // Kiểm tra nếu file tồn tại, đọc dữ liệu cũ
     let oldData = [];
-        try {
-            await fs.access(filePath);
-            oldData = JSON.parse(await fs.readFile(filePath, "utf8"));
-            if (!Array.isArray(oldData)) throw new Error("JSON is in wrong Format");
-        } catch (error) {
-            console.error("Error when readign Json", error.message);
-            return;
-        }
-    
+    try {
+        await fs.access(filePath);
+        oldData = JSON.parse(await fs.readFile(filePath, "utf8"));
+        if (!Array.isArray(oldData)) throw new Error("JSON is in wrong Format");
+    } catch (error) {
+        console.error("This new chat is saved ");
+    }
 
     // Thêm dữ liệu mới vào mảng
     oldData.push(newData);
@@ -68,7 +65,7 @@ export async function getHistoryChat(chat_id=""){
     return chat;
 }
 export async function addHitoryChat(chat_id="",data){
-    pathChat = `./packages/agent/chat-history/${chat_id}.json`;
+    const pathChat = `./packages/agent/chat-history/${chat_id}.json`;
     try{
         await appendToJsonFile(pathChat,data)
     }
