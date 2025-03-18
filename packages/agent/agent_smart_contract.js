@@ -6,6 +6,9 @@ import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import term from 'terminal-kit';
 import { tool } from '@langchain/core/tools';
+import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
+
+
 import { z } from 'zod';
 
 import { deployTokenAndPool } from '../swap/deploy-new-token.js';
@@ -14,6 +17,18 @@ import { logger } from '../logger/index.js';
 
 import { prompt } from './constant_agent.js';
 import { config } from './config.js';
+
+import pg from "pg";
+
+const { Pool } = pg;
+
+const pool = new Pool({
+  connectionString: "postgresql://postgres:123456@localhost:5432/testdb"
+});
+
+const checkpointer = new PostgresSaver(pool);
+
+// await checkpointer.setup();
 
 const deployTokenAndPoolSchema = z.object({
 	name: z.string(),
@@ -267,4 +282,26 @@ async function AgentWakeUp() {
 	}
 }
 
-AgentWakeUp();
+async function AgentDoJob(request){
+	let response = ""
+	const agentAnswer = await langgraphAgent.stream(
+		{ messages: [new HumanMessage({ content: request })] },
+		{ configurable: { thread_id: '3' } },
+	);
+	for await (const chunk of agentAnswer) {
+		if ('agent' in chunk){
+			for (const message of chunk.agent.messages){
+				const agentResponse = message.content;
+				response+=agentResponse
+			}
+		}
+	}
+	return response
+
+}
+const a = await AgentDoJob("I'm Hoa")
+const b = await AgentDoJob("Do you know me")
+
+
+console.log(b)
+// AgentWakeUp();
