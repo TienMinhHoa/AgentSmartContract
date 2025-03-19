@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 {
   "Personality": "unFriendly",
   "History": [
@@ -37,6 +38,8 @@
   ]
 }
 =======
+=======
+>>>>>>> 8a1c719591504e390275a72762ec2ef615cdeca9
 [
   {
     "user": "hello",
@@ -50,5 +53,9 @@
     "user": "Do you know my name",
     "system": "Yes, you mentioned that your name is Hoa. How can I assist you further?"
   }
+<<<<<<< HEAD
 ]
 >>>>>>> 5680c49c (fix: mem)
+=======
+]
+>>>>>>> 8a1c719591504e390275a72762ec2ef615cdeca9
