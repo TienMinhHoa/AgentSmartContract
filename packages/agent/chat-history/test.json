@@ -8,7 +8,58 @@
     {
       "user": "Do you know my name",
       "system": "Yes, you mentioned that your name is Hoa. How can I assist you today?"
+    },
+    {
+      "user": "",
+      "system": "It seems like your message didn't come through. How can I assist you today?"
+    },
+    {
+      "user": "",
+      "system": "It looks like your messages are not coming through. If you have a question or need assistance, please try sending it again!"
+    },
+    {
+      "user": "",
+      "system": "It seems that your messages are blank. If you have a question or need assistance, please try typing it again!"
+    },
+    {
+      "user": "",
+      "system": "It appears that you're not sending a message. If there's something on your mind or if you need assistance, feel free to share!"
+    },
+    {
+      "user": "",
+      "system": "It seems that your messages are still coming through as blank. If you're experiencing any issues or have a question, please try again. I'm here to help!"
+    },
+    {
+      "user": "",
+      "system": "It looks like there's still no message coming through. If you have any questions or need assistance, please type your message. I'm here to help!"
+    },
+    {
+      "user": "Do you know my name",
+      "system": "Yes, your name is Hoa. How can I assist you today?"
+    },
+    {
+      "user": "Do you know my name",
+      "system": "Yes, you mentioned that your name is Hoa. How can I assist you today?"
+    },
+    {
+      "user": "xin chào",
+      "system": "Xin chào, Hoa! Bạn cần giúp gì hôm nay?"
+    },
+    {
+      "user": "xin chào",
+      "system": "Xin chào! Có điều gì tôi có thể giúp bạn hôm nay không?"
+    },
+    {
+      "user": "xin chào",
+      "system": "Xin chào! Bạn có câu hỏi nào hoặc cần giúp đỡ gì không?"
+    },
+    {
+      "user": "xin chào",
+      "system": "Xin chào! Nếu bạn có câu hỏi hoặc cần hỗ trợ, hãy cho tôi biết nhé!"
+    },
+    {
+      "user": "xin chào",
+      "system": "Xin chào! Bạn có muốn nói về điều gì không?"
     }
   ]
 }
-
