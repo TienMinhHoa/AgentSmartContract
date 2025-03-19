@@ -66,6 +66,7 @@ export async function getHistoryChat(chat_id=""){
     const pathChat = `./packages/agent/chat-history/${chat_id}.json`;
     try{
         await fs.access(pathChat);
+        await appendToJsonFile(pathChat,{Personality:"",History:[]});
     } catch(error){
         return []
     }

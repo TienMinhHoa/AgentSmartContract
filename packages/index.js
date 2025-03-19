@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.post("/chat", async (req, res)=>{
     const content = req.body;
-    const response  = await invokeAgent("test",content.request);
+    const response  = await invokeAgent(content.id_chat,content.request);
     // console.log(a);
     res.status(201).json({ user: content.request, system: response });
     // return a

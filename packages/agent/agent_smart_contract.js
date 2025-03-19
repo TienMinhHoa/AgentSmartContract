@@ -32,7 +32,7 @@ const swapTokenSchema = z.object({
 	tokenOutAddress: z.string()
 });
 
-const addressChema = z.object({
+const addressSchema = z.object({
 	symbol:z.string(),
 });
 const swapTokenTool = tool(
@@ -81,7 +81,7 @@ const addressTool = tool(
 	{
 		name: 'AddressFinder',
 		description: ` This function is used to find the address of symbol`,
-		schema: addressChema,
+		schema: addressSchema,
 	},
 );
 
@@ -229,7 +229,7 @@ export async function invokeAgent(id_thread="1",request="") {
 	}
 	request = `Pretend you are a ${character}.
 				You must response for user in a ${character} way this require: ${request}
-				
+
 				After finish, describe what did you do `;
 		const cache = {user:request, system:""}
 		const agentAnswer = await langgraphAgent.stream(
