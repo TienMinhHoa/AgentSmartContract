@@ -9,19 +9,11 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-<<<<<<< HEAD
 		"dotenv": "^16.4.7",
-		"viem": "^2.23.12"
-=======
-<<<<<<< HEAD
-		"dotenv": "^16.4.7",
-		"viem": "^2.23.12"
-=======
+		"viem": "^2.23.12",
 		"@langchain/langgraph-checkpoint-postgres": "^0.0.4",
 		"dotenv": "^16.4.7",
 		"ethers": "^6.13.5"
->>>>>>> 5680c49c55c2f6f738559784020fb2ae07ec4a50
->>>>>>> 8a1c719591504e390275a72762ec2ef615cdeca9
 	},
 	"type": "module",
 	"devDependencies": {

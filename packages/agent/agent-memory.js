@@ -12,14 +12,18 @@ async function readJsonFile(filePath) {
     }
 }
 
+
 async function appendToJsonFile(filePath, newData) {
     let oldData = [];
+    let character = "";
     try {
         await fs.access(filePath);
-        oldData = JSON.parse(await fs.readFile(filePath, "utf8"));
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
+        oldData = data["History"];
+        character = data["Personality"];
         if (!Array.isArray(oldData)) throw new Error("JSON is in wrong Format");
     } catch (error) {
-        console.error("This new chat is saved ");
+        console.error(error);
     }
 
     // Thêm dữ liệu mới vào mảng
@@ -33,33 +37,30 @@ async function appendToJsonFile(filePath, newData) {
     }
 }
 
-export async function changeCharacter(chat_id = "",character="Friendly"){
+export async function changeCharacter(chat_id="",character=""){
     let filePath = `./packages/agent/chat-history/${chat_id}.json`;
     try {
         await fs.access(filePath);
-        let data = JSON.parse(await fs.readFile(filePath, "utf8"));
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
         data["Personality"] = character;
         await fs.writeFile(filePath, JSON.stringify(data, null, 2));
     } catch (error) {
         console.error(error);
-        return;
     }
-    
 }
 
-export async function getCharater(chat_id="") {
+export async function getCharacter(chat_id=""){
     let filePath = `./packages/agent/chat-history/${chat_id}.json`;
     try {
         await fs.access(filePath);
-        let data = JSON.parse(await fs.readFile(filePath, "utf8"));
-        let character = data["Personality"];
-        return character;
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
+        
+        return data["Personality"]
     } catch (error) {
         console.error(error);
-        return;
+        return
     }
 }
-
 export async function getHistoryChat(chat_id=""){
     const chat = [];
     const pathChat = `./packages/agent/chat-history/${chat_id}.json`;
@@ -90,10 +91,7 @@ export async function addHitoryChat(chat_id="",data){
     }
 }
 
-
-
 // await appendToJsonFile("./packages/agent/chat-history/test.json",{user:"quit","system":"Bye"})
 
 // const a = await getHistoryChat("test")
 // console.log(a)
-// await changeCharacter("test2","unFriendly")
