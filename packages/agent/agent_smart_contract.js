@@ -196,7 +196,7 @@ async function AgentWakeUp(id_thread="1",request="") {
 	}
 }
 
-async function invokeAgent(id_thread="1",request="") {
+export async function invokeAgent(id_thread="1",request="") {
 	const history = await getHistoryChat(id_thread)
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
@@ -234,5 +234,5 @@ async function invokeAgent(id_thread="1",request="") {
 
 
 // AgentWakeUp("test2");
-let out = await invokeAgent("test2","Tôi nhờ bạn swap mấy lần rồi")
-console.log(out)
+// let out = await invokeAgent("test2","Tôi nhờ bạn swap mấy lần rồi")
+// console.log(out)

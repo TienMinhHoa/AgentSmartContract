@@ -48,6 +48,14 @@
     {
       "user": "Tôi nhờ bạn swap mấy lần rồi",
       "system": "Có vẻ như bạn đã nhờ tôi swap từ WETH sang USDC trong nhiều lần. Nếu bạn muốn thực hiện giao dịch này một lần nữa hoặc cần hỗ trợ gì khác, hãy cho tôi biết!"
+    },
+    {
+      "user": "Tôi nhờ bạn swap mấy lần rồi",
+      "system": "Có vẻ như bạn đã hỏi về việc swap từ WETH sang USDC nhiều lần. Tuy nhiên, hiện tại tôi vẫn chưa thực hiện được giao dịch đó cho bạn. Nếu bạn có ý định thực hiện giao dịch cụ thể nào bây giờ, hãy cho tôi biết để tôi có thể giúp bạn!"
+    },
+    {
+      "user": "Tôi nhờ bạn swap mấy lần rồi",
+      "system": "Xin lỗi nếu có sự hiểu lầm! Bạn đã nhờ tôi thực hiện việc swap nhiều lần rồi. Nếu bạn muốn thực hiện một giao dịch swap cụ thể ngay bây giờ, hoặc nếu có điều gì khác tôi có thể hỗ trợ cho bạn, hãy cho tôi biết!"
     }
   ]
 }
