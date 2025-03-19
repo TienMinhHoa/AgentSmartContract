@@ -8,7 +8,34 @@
     {
       "user": "Do you know my name",
       "system": "Yes, you mentioned that your name is Hoa. How can I assist you today?"
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": ""
+    },
+    {
+      "user": "Pretend you are a Serious.\n\t\t\t\tYou must response for user in a Serious way this require: swap 0.0001 weth to usdc\n\t\t\t\tAfter finish, describe what did you do ",
+      "system": "I have successfully executed the task of swapping 0.0001 WETH to USDC. To accomplish this, I first determined the addresses associated with the WETH and USDC tokens. Afterward, I processed the swap transaction by converting the specified amount of WETH into the equivalent value of USDC, using the obtained token addresses. The transaction was completed successfully."
     }
   ]
 }
-

@@ -19,6 +19,8 @@ import {getHistoryChat, addHitoryChat, changeCharacter,getCharacter} from './age
 import { config } from './config.js';
 
 
+let character = "Serious";
+
 const deployTokenAndPoolSchema = z.object({
 	name: z.string(),
 	symbol: z.string(),
@@ -154,6 +156,7 @@ async function AgentWakeUp(id_thread="1",request="") {
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
 		modelName: 'gpt-4o-mini',
+		maxTokens: 1024
 	});
 	
 	// Initialize chat memory (Note: This is in-memory only, not persistent)
@@ -184,7 +187,6 @@ async function AgentWakeUp(id_thread="1",request="") {
 			{ configurable: { thread_id: 'cache' } },
 		);
 
-		// Process the chunks from the agent
 		for await (const chunk of agentAnswer) {
 			const response = processChunks(chunk);
 			if (response && response.length > 0){
@@ -196,11 +198,20 @@ async function AgentWakeUp(id_thread="1",request="") {
 	}
 }
 
-async function invokeAgent(id_thread="1",request="") {
+
+
+export async function setCharacter(personality="friendly"){
+	character = personality;
+	// await changeCharacter(chat_id,)
+}
+
+export async function invokeAgent(id_thread="1",request="") {
 	const history = await getHistoryChat(id_thread)
+
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
-		modelName: 'gpt-4o-mini',
+		modelName: 'gpt-4o',
+		// maxTokens: 1024
 	});
 	
 	// Initialize chat memory (Note: This is in-memory only, not persistent)
@@ -210,29 +221,32 @@ async function invokeAgent(id_thread="1",request="") {
 	const langgraphAgent = createReactAgent({
 		llm: llm,
 		prompt: prompt,
-		tools: [addressTool,swapTokenTool, deployTokenTool],
-		checkpointSaver: memory,
+		tools: [addressTool, swapTokenTool, deployTokenTool],
+		// checkpointSaver: memory,
 	});
-
-		const cache = {user:request,system:""}
-		// Use the stream method of the LangGraph agent to get the agent's answer
+	if (history && history.length >= 80){
+		return "This conservation is too long, please make another.";
+	}
+	request = `Pretend you are a ${character}.
+				You must response for user in a ${character} way this require: ${request}
+				
+				After finish, describe what did you do `;
+		const cache = {user:request, system:""}
 		const agentAnswer = await langgraphAgent.stream(
 			{ messages: [...history,new HumanMessage({ content: request })] },
 			{ configurable: { thread_id: 'cache' } },
 		);
-
-		// Process the chunks from the agent
 		for await (const chunk of agentAnswer) {
 			const response = processChunks(chunk);
 			if (response && response.length > 0){
 				cache.system+=response
 			}
 		await addHitoryChat(id_thread, cache)
-		return cache.system
+		
 	}
+	return cache.system
 }
 
 
 // AgentWakeUp("test2");
-let out = await invokeAgent("test2","Tôi nhờ bạn swap mấy lần rồi")
-console.log(out)
+// invokeAgent("test2","swap 0.00001 usdc to weth")
