@@ -148,7 +148,8 @@ function processChunks(chunk) {
 	}
 }
 
-async function AgentWakeUp(id_thread="1") {
+
+async function AgentWakeUp(id_thread="1",request="") {
 	const history = await getHistoryChat(id_thread)
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
@@ -195,4 +196,43 @@ async function AgentWakeUp(id_thread="1") {
 	}
 }
 
-AgentWakeUp("test2");
+async function invokeAgent(id_thread="1",request="") {
+	const history = await getHistoryChat(id_thread)
+	const llm = new ChatOpenAI({
+		apiKey: config.apiKey,
+		modelName: 'gpt-4o-mini',
+	});
+	
+	// Initialize chat memory (Note: This is in-memory only, not persistent)
+	const memory = new MemorySaver();
+	
+	// Create a LangGraph agent
+	const langgraphAgent = createReactAgent({
+		llm: llm,
+		prompt: prompt,
+		tools: [addressTool,swapTokenTool, deployTokenTool],
+		checkpointSaver: memory,
+	});
+
+		const cache = {user:request,system:""}
+		// Use the stream method of the LangGraph agent to get the agent's answer
+		const agentAnswer = await langgraphAgent.stream(
+			{ messages: [...history,new HumanMessage({ content: request })] },
+			{ configurable: { thread_id: 'cache' } },
+		);
+
+		// Process the chunks from the agent
+		for await (const chunk of agentAnswer) {
+			const response = processChunks(chunk);
+			if (response && response.length > 0){
+				cache.system+=response
+			}
+		await addHitoryChat(id_thread, cache)
+		return cache.system
+	}
+}
+
+
+// AgentWakeUp("test2");
+let out = await invokeAgent("test2","Tôi nhờ bạn swap mấy lần rồi")
+console.log(out)

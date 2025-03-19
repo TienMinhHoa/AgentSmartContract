@@ -36,6 +36,18 @@
     {
       "user": "swap for me 0.00001 weth to usdc",
       "system": "The swap of 0.00001 WETH to USDC was successful! If you have any more questions or need further assistance, feel free to ask."
+    },
+    {
+      "user": "Tôi nhờ bạn swap mấy lần rồi",
+      "system": "Bạn đã nhờ tôi swap từ WETH sang USDC một vài lần rồi. Nếu bạn cần giúp đỡ nữa hoặc có câu hỏi khác, hãy cho tôi biết!"
+    },
+    {
+      "user": "Tôi nhờ bạn swap mấy lần rồi",
+      "system": "Bạn đã nhờ tôi thực hiện giao dịch swap từ WETH sang USDC một số lần rồi. Nếu bạn cần thực hiện thêm giao dịch nào hoặc có câu hỏi khác, hãy cho tôi biết!"
+    },
+    {
+      "user": "Tôi nhờ bạn swap mấy lần rồi",
+      "system": "Có vẻ như bạn đã nhờ tôi swap từ WETH sang USDC trong nhiều lần. Nếu bạn muốn thực hiện giao dịch này một lần nữa hoặc cần hỗ trợ gì khác, hãy cho tôi biết!"
     }
   ]
 }
