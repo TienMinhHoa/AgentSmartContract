@@ -6,14 +6,16 @@ import { createReactAgent } from '@langchain/langgraph/prebuilt';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 import term from 'terminal-kit';
 import { tool } from '@langchain/core/tools';
+
+
 import { z } from 'zod';
 
 import { deployTokenAndPool } from '../agent-function/deploy-new-token.js';
-import { swapToken } from '../agent-function/swap.js';
+import { swapToken, getAddressFromSymbol } from '../agent-function/swap.js';
 import { logger } from '../logger/index.js';
 
 import { prompt } from './constant_agent.js';
-import {getHistoryChat, addHitoryChat} from './agent-memory.js';
+import {getHistoryChat, addHitoryChat, changeCharacter,getCharacter} from './agent-memory.js';
 import { config } from './config.js';
 
 
@@ -27,17 +29,21 @@ const swapTokenSchema = z.object({
 	tokenInAddress: z.string(),
 	tokenOutAddress: z.string()
 });
+
+const addressChema = z.object({
+	symbol:z.string(),
+});
 const swapTokenTool = tool(
 	async (input) => {
-		logger.info(`Start swapping from ${input.amount}$ ETH to USDC`);
-		const res = await swapToken(input.amount);
+		logger.info(`Start swapping from ${input.amount}$`);
+		const res = await swapToken(input.amount,input.tokenInAddress,input.tokenOutAddress);
 		logger.info(res);
 		return res;
 	},
 	{
 		name: 'Swaper',
 		description: `This function performs the token swap process, 
-                    converting a specified amount this type of token to another type`,
+					converting a specified amount this type of token to another type`,
 		schema: swapTokenSchema,
 	},
 );
@@ -54,9 +60,26 @@ const deployTokenTool = tool(
 	{
 		name: 'Deployer',
 		description: ` This function is responsible for deploying a new 
-                  ERC-20 token along with a liquidity pool on the blockchain 
-                  by interacting with a smart contract and It also add this new token to a pool`,
+				  ERC-20 token along with a liquidity pool on the blockchain 
+				  by interacting with a smart contract and It also add this new token to a pool`,
 		schema: deployTokenAndPoolSchema,
+	},
+);
+
+const addressTool = tool(
+	async (input) => {
+		try{
+		const res = await getAddressFromSymbol(input.symbol);
+		logger.info(res);
+		return res;
+		} catch (error){
+			return "Cannot find address of symbol."
+		}
+	},
+	{
+		name: 'AddressFinder',
+		description: ` This function is used to find the address of symbol`,
+		schema: addressChema,
 	},
 );
 
@@ -64,26 +87,9 @@ const deployTokenTool = tool(
 const tk = term.terminal;
 
 // Initialize OpenAI LLM
-const llm = new ChatOpenAI({
-	apiKey: config.apiKey,
-	modelName: 'gpt-4o-mini',
-});
 
-// Initialize chat memory (Note: This is in-memory only, not persistent)
-const memory = new MemorySaver();
 
-// Create a LangGraph agent
-const langgraphAgent = createReactAgent({
-	llm: llm,
-	prompt: prompt,
-	tools: [swapTokenTool, deployTokenTool],
-	checkpointSaver: memory,
-});
 
-// Define an asynchronous function to get the user question
-/**
- *
- */
 function getUserQuestion(message) {
 	const rl = readline.createInterface({
 		input: process.stdin, 
@@ -142,8 +148,24 @@ function processChunks(chunk) {
 	}
 }
 
-async function AgentWakeUp(id_thread="1") {
+
+async function AgentWakeUp(id_thread="1",request="") {
 	const history = await getHistoryChat(id_thread)
+	const llm = new ChatOpenAI({
+		apiKey: config.apiKey,
+		modelName: 'gpt-4o-mini',
+	});
+	
+	// Initialize chat memory (Note: This is in-memory only, not persistent)
+	const memory = new MemorySaver();
+	
+	// Create a LangGraph agent
+	const langgraphAgent = createReactAgent({
+		llm: llm,
+		prompt: prompt,
+		tools: [addressTool,swapTokenTool, deployTokenTool],
+		checkpointSaver: memory,
+	});
 
 	while (true) {
 		// Get the user's question and display it in the terminal
@@ -165,7 +187,7 @@ async function AgentWakeUp(id_thread="1") {
 		// Process the chunks from the agent
 		for await (const chunk of agentAnswer) {
 			const response = processChunks(chunk);
-			if (response.length > 0){
+			if (response && response.length > 0){
 				cache.system+=response
 			}
 		}
@@ -174,4 +196,43 @@ async function AgentWakeUp(id_thread="1") {
 	}
 }
 
-AgentWakeUp("test2");
+export async function invokeAgent(id_thread="1",request="") {
+	const history = await getHistoryChat(id_thread)
+	const llm = new ChatOpenAI({
+		apiKey: config.apiKey,
+		modelName: 'gpt-4o-mini',
+	});
+	
+	// Initialize chat memory (Note: This is in-memory only, not persistent)
+	const memory = new MemorySaver();
+	
+	// Create a LangGraph agent
+	const langgraphAgent = createReactAgent({
+		llm: llm,
+		prompt: prompt,
+		tools: [addressTool,swapTokenTool, deployTokenTool],
+		checkpointSaver: memory,
+	});
+
+		const cache = {user:request,system:""}
+		// Use the stream method of the LangGraph agent to get the agent's answer
+		const agentAnswer = await langgraphAgent.stream(
+			{ messages: [...history,new HumanMessage({ content: request })] },
+			{ configurable: { thread_id: 'cache' } },
+		);
+
+		// Process the chunks from the agent
+		for await (const chunk of agentAnswer) {
+			const response = processChunks(chunk);
+			if (response && response.length > 0){
+				cache.system+=response
+			}
+		await addHitoryChat(id_thread, cache)
+		return cache.system
+	}
+}
+
+
+// AgentWakeUp("test2");
+// let out = await invokeAgent("test2","Tôi nhờ bạn swap mấy lần rồi")
+// console.log(out)

@@ -31,7 +31,7 @@ const signer = new ethers.Wallet(config.PRIVATE_KEY, provider);
 /**
  *
  */
-const getAddressFromSymbol = (symbol) => {
+export const getAddressFromSymbol = (symbol) => {
 	switch (symbol) {
 		case 'WETH':
 			return WETH_ADDRESS;
@@ -91,9 +91,7 @@ async function getPoolInfo(factoryContract, tokenInAddress, tokenOutAddress) {
 	return { poolContract, fee };
 }
 
-/**
- *
- */
+
 async function getTokenInfo(tokenAddress, provider) {
 	try {
 		const erc20Abi = [

@@ -3,7 +3,7 @@
 
 dist/
 node_modules/
-
+./packages/agent/node_modules/
 **/tsconfig.tsbuildinfo
 .vscode/*
 

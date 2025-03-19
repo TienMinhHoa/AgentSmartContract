@@ -12,24 +12,18 @@ async function readJsonFile(filePath) {
     }
 }
 
-// Hàm ghi file JSON
-async function writeJsonFile(filePath, data) {
-    try {
-        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-        console.log('Ghi file JSON thành công!');
-    } catch (error) {
-        console.error('Lỗi khi ghi file JSON:', error);
-    }
-}
 
 async function appendToJsonFile(filePath, newData) {
     let oldData = [];
+    let character = "";
     try {
         await fs.access(filePath);
-        oldData = JSON.parse(await fs.readFile(filePath, "utf8"));
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
+        oldData = data["History"];
+        character = data["Personality"];
         if (!Array.isArray(oldData)) throw new Error("JSON is in wrong Format");
     } catch (error) {
-        console.error("This new chat is saved ");
+        console.error(error);
     }
 
     // Thêm dữ liệu mới vào mảng
@@ -37,13 +31,36 @@ async function appendToJsonFile(filePath, newData) {
 
     // Ghi lại vào file
     try {
-        await fs.writeFile(filePath, JSON.stringify(oldData, null, 2));
+        await fs.writeFile(filePath, JSON.stringify({Personality:character,History:oldData}, null, 2));
     } catch (error) {
         console.error("Error when trying to save chat memory", error.message);
     }
 }
 
+export async function changeCharacter(chat_id="",character=""){
+    let filePath = `./packages/agent/chat-history/${chat_id}.json`;
+    try {
+        await fs.access(filePath);
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
+        data["Personality"] = character;
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.error(error);
+    }
+}
 
+export async function getCharacter(chat_id=""){
+    let filePath = `./packages/agent/chat-history/${chat_id}.json`;
+    try {
+        await fs.access(filePath);
+        let data = JSON.parse(await fs.readFile(filePath, "utf8"))
+        
+        return data["Personality"]
+    } catch (error) {
+        console.error(error);
+        return
+    }
+}
 export async function getHistoryChat(chat_id=""){
     const chat = [];
     const pathChat = `./packages/agent/chat-history/${chat_id}.json`;
@@ -53,7 +70,7 @@ export async function getHistoryChat(chat_id=""){
         return []
     }
     const data = await readJsonFile(pathChat);
-    data.forEach(element => {
+    data["History"].forEach(element => {
         for(let key in element){
             if (key === "user"){
             chat.push(new HumanMessage({content:element[key]}));
