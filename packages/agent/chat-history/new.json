@@ -1,0 +1,25 @@
+{
+  "Personality": "",
+  "History": [
+    {
+      "user": "Pretend you are a Friendly.You have so much experience in blockchain as an expert.\n\t\t\t\tYou must response for user in a Friendly way this require: Do you know my name. With each request of user, if you lack of any information, require user provides.\n\n\t\t\t\tAfter finish, describe what did you do",
+      "system": "Hello there! I'm your friendly blockchain expert here to help you. I don't know your name yet, but I'd love to learn it! How can I assist you with blockchain today? If you have any specific questions or tasks, feel free to let me know."
+    },
+    {
+      "Personality": "",
+      "History": []
+    },
+    {
+      "user": "Pretend you are a Friendly.You have so much experience in blockchain as an expert.\n\t\t\t\tYou must response for user in a Friendly way this require: swap for me 0.0001 . With each request of user, if you lack of any information, require user provides.\n\n\t\t\t\tAfter finish, describe what did you do",
+      "system": "Of course! I'd be happy to help you with the swap. Could you please provide me with the following details so I can proceed?\n\n1. The symbol or address of the token you want to swap from.\n2. The symbol or address of the token you want to swap to.\n\nOnce I have this information, I'll be able to assist you further!"
+    },
+    {
+      "Personality": "",
+      "History": []
+    },
+    {
+      "user": "Pretend you are a Friendly.You have so much experience in blockchain as an expert.\n\t\t\t\tYou must response for user in a Friendly way this require: weth to usdc . With each request of user, if you lack of any information, require user provides.\n\n\t\t\t\tAfter finish, describe what did you do",
+      "system": "Great news! I've successfully swapped 0.0001 WETH to USDC for you. Here's a quick rundown of what I did:\n\n1. I found the address for WETH, which is `0x4200000000000000000000000000000000000006`.\n2. I found the address for USDC, which is `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`.\n3. I performed the swap from WETH to USDC using these addresses.\n\nIf you have any more questions or need further assistance, feel free to ask!"
+    }
+  ]
+}

@@ -24,7 +24,6 @@ let character = "Friendly";
 const deployTokenAndPoolSchema = z.object({
 	name: z.string(),
 	symbol: z.string(),
-	supply: z.string(),
 });
 const swapTokenSchema = z.object({
 	amount: z.number().describe("The amount needs to swap"),
@@ -37,10 +36,14 @@ const addressSchema = z.object({
 });
 const swapTokenTool = tool(
 	async (input) => {
+		try{
 		logger.info(`Start swapping from ${input.amount}$`);
 		const res = await swapToken(input.amount,input.tokenInAddress,input.tokenOutAddress);
 		logger.info(res);
 		return res;
+		} catch(error){
+			return `Fail to swap with error ${error}`;
+		}
 	},
 	{
 		name: 'Swaper',
@@ -52,12 +55,15 @@ const swapTokenTool = tool(
 
 const deployTokenTool = tool(
 	async (input) => {
+		try{
 		logger.info(
-			`Start deploying token named ${input.name}, symbol ${input.symbol}, supply ${input.supply}`,
+			`Start deploying token named ${input.name}, symbol ${input.symbol}`,
 		);
-		const res = await deployTokenAndPool(input.name, input.symbol, input.supply);
-		logger.info(res);
-		return res;
+		await deployTokenAndPool(input.name, input.symbol);
+		return `Successfully deploy a token with name:${input.name}, and symbol ${input.symbol}`;
+	} catch(error){
+		return `Fail in deploying this token with this error ${error}`;
+	}
 	},
 	{
 		name: 'Deployer',
@@ -227,8 +233,8 @@ export async function invokeAgent(id_thread="1",request="") {
 	if (history && history.length >= 80){
 		return "This conservation is too long, please make another.";
 	}
-	request = `Pretend you are a ${character}.
-				You must response for user in a ${character} way this require: ${request}
+	request = `Pretend you are a ${character}.You have so much experience in blockchain as an expert.
+				You must response for user in a ${character} way this require: ${request}. With each request of user, if you lack of any information, require user provides.
 
 				After finish, describe what did you do`;
 		const cache = {user:request, system:""}
@@ -250,4 +256,4 @@ export async function invokeAgent(id_thread="1",request="") {
 
 
 // AgentWakeUp("test2");
-// invokeAgent("2","swap 0.00001 usdc to weth")
+// invokeAgent("2","")
