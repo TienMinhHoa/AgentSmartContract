@@ -5,16 +5,20 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"job": "node ./packages/job/index.js",
 		"app": "node ./packages/twitter/index.js",
-		"start": "node ./packages/agent/agent_smart_contract.js",
+		"start": "node ./packages/index.js",
 		"lint": "eslint .",
 		"lint:fix": "prettier --write '**/package.json' && eslint . --fix"
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@langchain/core": "^0.3.42",
+		"@langchain/langgraph": "^0.2.57",
 		"@langchain/langgraph-checkpoint-postgres": "^0.0.4",
+		"@langchain/openai": "^0.4.5",
 		"dotenv": "^16.4.7",
 		"ethers": "^6.13.5",
 		"express": "^4.21.2",
+		"terminal-kit": "^3.1.2",
 		"twitter-api-v2": "^1.20.2",
 		"viem": "^2.23.12"
 	},
