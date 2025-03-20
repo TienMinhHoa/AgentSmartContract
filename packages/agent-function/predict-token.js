@@ -4,8 +4,11 @@ import { config } from './config.js';
 
 export async function predictToken(
     deployer,
+    fid,
     name,
     symbol,
+    image,
+    castHash,
     supply,
     salt
 ) {
@@ -22,8 +25,11 @@ export async function predictToken(
             { type: 'string' },
             { type: 'uint256' },
             { type: 'address' },
+            { type: 'uint256' },
+            { type: 'string' },
+            { type: 'string' },
         ],
-        [name, symbol, supply, deployer]
+        [name, symbol, supply, deployer, fid, image, castHash]
     );
 
     const creationCode = clankerTokenArtifact.bytecode.object;
@@ -43,3 +49,4 @@ export async function predictToken(
 
     return `0x${hash.slice(-40)}`;
 }
+
