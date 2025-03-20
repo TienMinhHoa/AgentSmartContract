@@ -86,10 +86,7 @@ const addressTool = tool(
 	},
 );
 
-// Initialize Terminal Kit for better output formatting and visualization
 const tk = term.terminal;
-
-// Initialize OpenAI LLM
 
 
 
