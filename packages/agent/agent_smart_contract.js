@@ -71,17 +71,19 @@ const deployTokenTool = tool(
 const addressTool = tool(
 	async (input) => {
 		try{
+		
 		const res = await getAddressFromSymbol(input.symbol);
 		logger.info(res);
 		return res;
 		} catch (error){
+			console.log(input.symbol,"cannot find", error)
 			return "Cannot find address of symbol."
 		}
 	},
 	{
 		name: 'AddressFinder',
 		description: ` This function is used to find the address of symbol.
-						Recieving the input is symbol of token, try to find its address`,
+						Recieving the input is symbol of token, try to find its address. `,
 		schema: addressSchema,
 	},
 );
@@ -209,7 +211,7 @@ export async function invokeAgent(id_thread="1",request="") {
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
 		modelName: 'gpt-4o',
-		// maxTokens: 1024
+		temperature:0.5
 	});
 	
 	// Initialize chat memory (Note: This is in-memory only, not persistent)
@@ -220,7 +222,7 @@ export async function invokeAgent(id_thread="1",request="") {
 		llm: llm,
 		prompt: prompt,
 		tools: [addressTool, swapTokenTool, deployTokenTool],
-		// checkpointSaver: memory,
+		checkpointSaver: memory,
 	});
 	if (history && history.length >= 80){
 		return "This conservation is too long, please make another.";
@@ -228,7 +230,7 @@ export async function invokeAgent(id_thread="1",request="") {
 	request = `Pretend you are a ${character}.
 				You must response for user in a ${character} way this require: ${request}
 
-				After finish, describe what did you do `;
+				After finish, describe what did you do`;
 		const cache = {user:request, system:""}
 		const agentAnswer = await langgraphAgent.stream(
 			{ messages: [...history,new HumanMessage({ content: request })] },
@@ -239,12 +241,13 @@ export async function invokeAgent(id_thread="1",request="") {
 			if (response && response.length > 0){
 				cache.system+=response
 			}
-		await addHitoryChat(id_thread, cache)
 		
 	}
+	await addHitoryChat(id_thread, cache)
+
 	return cache.system
 }
 
 
 // AgentWakeUp("test2");
-// invokeAgent("test2","swap 0.00001 usdc to weth")
+// invokeAgent("2","swap 0.00001 usdc to weth")

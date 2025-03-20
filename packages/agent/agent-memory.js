@@ -1,13 +1,12 @@
 import { promises as fs } from 'fs';
 import { HumanMessage, AIMessage } from '@langchain/core/messages';
 
-// Hàm đọc file JSON
 async function readJsonFile(filePath) {
     try {
         const data = await fs.readFile(filePath, 'utf-8');
         return JSON.parse(data);
     } catch (error) {
-        console.error('Lỗi khi đọc file JSON:', error);
+        console.error('Error When reading json file', error);
         return null;
     }
 }

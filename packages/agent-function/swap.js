@@ -32,6 +32,7 @@ const signer = new ethers.Wallet(config.PRIVATE_KEY, provider);
  *
  */
 export const getAddressFromSymbol = async (symbol) => {
+	symbol = symbol.toUpperCase();
 	switch (symbol) {
 		case 'WETH':
 			return WETH_ADDRESS;
