@@ -17,17 +17,20 @@ const clanker = new ethers.Contract(
 /**
  *
  */
-export async function deployTokenAndPool(name, symbol, supply) {
+export async function deployTokenAndPool(name, symbol) {
 	try {
-		const initialSupply = ethers.parseUnits(supply.toString(), 18);
+		const initialSupply = ethers.parseUnits("1000000000".toString(), 18);
 		const owner = signer.address;
-		const fee = 3000;
-		const tick = 60;
+		const fee = 10000;
+		const tick = -230400;
 		const saltData = await generateSalt(
 			signer.address,
+			0,
 			name,
 			symbol,
-			supply,
+			"",
+			"",
+			initialSupply,
 			config.WETH_ADDRESS,
 		);
 
@@ -38,26 +41,9 @@ export async function deployTokenAndPool(name, symbol, supply) {
 			10000,
 		];
 
-		// const allowed_pair_tx = await clanker.toggleAllowedPairedToken(
-		// 	config.WETH_ADDRESS,
-		// 	true,
-		// );
-		// await allowed_pair_tx.wait();
-		// logger.info('transaction hash:', allowed_pair_tx.hash);
-		// logger.info('Allowed pair token toggled');
-		// logger.info(`---------------------------------`);
-
 		const saltRaw = saltData.salt.startsWith("0x") ? saltData.salt : `0x${saltData.salt}`;
 		const salt = ethers.hexlify(saltRaw);
-
-		// i want to console all of params
-		logger.info(`name: ${name}`);
-		logger.info(`symbol: ${symbol}`);
-		logger.info(`initialSupply: ${initialSupply}`);
-		logger.info(`fee: ${fee}`);
-		logger.info(`salt: ${salt}`);
-		logger.info(`owner: ${owner}`);
-		logger.info(poolConfig);
+		logger.info(`Salt: ${salt}`);
 		const tx = await clanker.deployToken(
 			name,
 			symbol,
@@ -75,15 +61,6 @@ export async function deployTokenAndPool(name, symbol, supply) {
 		// Wait for the transaction to be mined
 		const receipt = await tx.wait();
 		logger.info(`✅ Token and Pool Deployed! TX Hash: ${receipt.hash}`);
-
-		// Parse the event logs to get the token and pool addresses
-		// const event = receipt.logs.find((log) => log.address === config.SIMPLE_DEPLOYER_ADDRESS);
-		// if (event) {
-		// 	const parsedEvent = clankerToken.interface.parseLog(event);
-		// 	logger.info(`🎉 Token Address: ${parsedEvent.args.token}`);
-		// 	logger.info(`🎉 Pool Address: ${parsedEvent.args.pool}`);
-		// }
-		// return 'Successfull';
 	} catch (error) {
 		console.error("❌ Deployment Error:", error);
 		if (error.data) {
@@ -93,4 +70,4 @@ export async function deployTokenAndPool(name, symbol, supply) {
 	}
 }
 
-// deployTokenAndPool("Test Token", "Test Symbol", "1000000");
+// deployTokenAndPool("ITACHI", "ITC");

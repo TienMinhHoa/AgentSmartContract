@@ -5,8 +5,11 @@ import { logger } from '../logger/index.js';
 
 export async function generateSalt(
     deployer,
+    fid,
     name,
     symbol,
+    image,
+    cashHash,
     supply,
     pairedTokenAddress
 ) {
@@ -21,8 +24,11 @@ export async function generateSalt(
         const salt = `0x${i.toString(16).padStart(64, '0')}`;
         const token = await predictToken(
             deployer,
+            fid,
             name,
             symbol,
+            image,
+            cashHash,
             supply,
             salt
         );
@@ -34,8 +40,6 @@ export async function generateSalt(
             logger.info(`---------------------------------`);
             logger.info(`Salt: ${salt}`);
             logger.info(`Token: ${token}`);
-            logger.info(`pairedTokenNum: ${pairedTokenNum}`);
-            logger.info(`tokenNum: ${tokenNum}`);
             logger.info(`---------------------------------`);
             return { salt, token };
         }
@@ -47,9 +51,12 @@ export async function generateSalt(
 }
 
 // generateSalt(
-//     "0xaD1fE2e10fB14A95D823525e8ed172EE1c86C65D",
-//     "PINGU",
-//     "PINGU",
-//     ethers.parseUnits("1000000000000", 18),
+//     "0x7372d36388E5e7d2cf7B3B9b4dB106D442F9a1a7",
+//     0,
+//     "Test Token",
+//     "Test Symbol",
+//     "haha",
+//     "clanker",
+//     1000000000000000000n,
 //     "0x4200000000000000000000000000000000000006"
 // )
