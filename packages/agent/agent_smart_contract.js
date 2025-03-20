@@ -59,8 +59,11 @@ const deployTokenTool = tool(
 		logger.info(
 			`Start deploying token named ${input.name}, symbol ${input.symbol}`,
 		);
-		await deployTokenAndPool(input.name, input.symbol);
-		return `Successfully deploy a token with name:${input.name}, and symbol ${input.symbol}`;
+		const response = await deployTokenAndPool(input.name, input.symbol);
+		return `Successfully deploy a token with name:${input.name}, and symbol ${input.symbol} with essential information: 
+				Token Addres: ${response[0]}
+				Position id: ${response[1]}
+				Supply: ${response[6]}`;
 	} catch(error){
 		return `Fail in deploying this token with this error ${error}`;
 	}
@@ -256,4 +259,4 @@ export async function invokeAgent(id_thread="1",request="") {
 
 
 // AgentWakeUp("test2");
-// invokeAgent("2","")
+invokeAgent("2","deploy a token with name ITACHI and symbol ITC")
