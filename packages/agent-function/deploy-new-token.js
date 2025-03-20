@@ -57,10 +57,38 @@ export async function deployTokenAndPool(name, symbol) {
 			poolConfig,
 		);
 		logger.info(`Transaction hash: ${tx.hash}`);
+		await tx.wait();
 
+		const eventAbi = [
+			"event TokenCreated(address tokenAddress, uint256 positionId, address deployer, uint256 fid, string name, string symbol, uint256 supply, address lockerAddress, string castHash)"
+		];
+		const contract = new ethers.Contract(config.CLANKER_FACTORY_V2, eventAbi, provider);
+		const receipt = await provider.getTransactionReceipt(tx.hash);
+		for (const log of receipt.logs) {
+			try {
+				const parsedLog = contract.interface.parseLog(log);
+				if (parsedLog.name === "TokenCreated") {
+					logger.info("🔥 TokenCreated Event Found!");
+					return [
+						parsedLog.args.tokenAddress, 
+						parsedLog.args.positionId, 
+						parsedLog.args.lockerAddress,
+						parsedLog.args.fid,
+						parsedLog.args.name,
+						parsedLog.args.symbol,
+						parsedLog.args.supply.toString(),
+						parsedLog.args.castHash
+					];
+				}
+			} catch (err) {
+				// console.error("Error parsing log:", err);
+			}
+		}
+
+		
 		// Wait for the transaction to be mined
-		const receipt = await tx.wait();
-		logger.info(`✅ Token and Pool Deployed! TX Hash: ${receipt.hash}`);
+		// const receipt = await tx.wait();
+		// logger.info(`✅ Token and Pool Deployed! TX Hash: ${receipt.hash}`);
 	} catch (error) {
 		console.error("❌ Deployment Error:", error);
 		if (error.data) {
@@ -71,3 +99,8 @@ export async function deployTokenAndPool(name, symbol) {
 }
 
 // deployTokenAndPool("ITACHI", "ITC");
+// const [tokenAddress, positionId, lockerAddress, fid, name, symbol, supply, castHash] = await deployTokenAndPool("ITACHI", "ITC");
+// logger.info(`Token Address: ${tokenAddress}`);
+// logger.info(`Position ID: ${positionId}`);
+// logger.info(`Locker Address: ${lockerAddress}`);
+
