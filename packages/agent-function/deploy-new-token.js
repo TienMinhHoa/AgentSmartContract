@@ -99,8 +99,8 @@ export async function deployTokenAndPool(name, symbol) {
 }
 
 // deployTokenAndPool("ITACHI", "ITC");
-const [tokenAddress, positionId, lockerAddress, fid, name, symbol, supply, castHash] = await deployTokenAndPool("ITACHI", "ITC");
-logger.info(`Token Address: ${tokenAddress}`);
-logger.info(`Position ID: ${positionId}`);
-logger.info(`Locker Address: ${lockerAddress}`);
+// const [tokenAddress, positionId, lockerAddress, fid, name, symbol, supply, castHash] = await deployTokenAndPool("ITACHI", "ITC");
+// logger.info(`Token Address: ${tokenAddress}`);
+// logger.info(`Position ID: ${positionId}`);
+// logger.info(`Locker Address: ${lockerAddress}`);
 
