@@ -3,6 +3,8 @@
 	"version": "1.0.0",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"job": "node ./packages/job/index.js",
+		"app": "node ./packages/twitter/index.js",
 		"start": "node ./packages/agent/agent_smart_contract.js",
 		"lint": "eslint .",
 		"lint:fix": "prettier --write '**/package.json' && eslint . --fix"
@@ -13,6 +15,7 @@
 		"dotenv": "^16.4.7",
 		"ethers": "^6.13.5",
 		"express": "^4.21.2",
+		"twitter-api-v2": "^1.20.2",
 		"viem": "^2.23.12"
 	},
 	"type": "module",
