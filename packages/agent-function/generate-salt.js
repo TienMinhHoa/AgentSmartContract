@@ -1,53 +1,45 @@
-import { predictToken } from './predict-token.js';
-import { ethers } from 'ethers';
 import crypto from 'node:crypto';
+
+import { ethers } from 'ethers';
+
 import { logger } from '../logger/index.js';
 
+import { predictToken } from './predict-token.js';
+
 export async function generateSalt(
-    deployer,
-    fid,
-    name,
-    symbol,
-    image,
-    cashHash,
-    supply,
-    pairedTokenAddress
+	deployer,
+	fid,
+	name,
+	symbol,
+	image,
+	cashHash,
+	supply,
+	pairedTokenAddress,
 ) {
-    const startingPoint = BigInt(
-        '0x' +
-        Array.from(crypto.getRandomValues(new Uint8Array(32)))
-            .map((b) => b.toString(16).padStart(2, '0'))
-            .join('')
-    );
-    let i = startingPoint;
-    while (true) {
-        const salt = `0x${i.toString(16).padStart(64, '0')}`;
-        const token = await predictToken(
-            deployer,
-            fid,
-            name,
-            symbol,
-            image,
-            cashHash,
-            supply,
-            salt
-        );
+	const startingPoint = BigInt(
+		'0x' +
+			Array.from(crypto.getRandomValues(new Uint8Array(32)))
+				.map((b) => b.toString(16).padStart(2, '0'))
+				.join(''),
+	);
+	let i = startingPoint;
+	while (true) {
+		const salt = `0x${i.toString(16).padStart(64, '0')}`;
+		const token = await predictToken(deployer, fid, name, symbol, image, cashHash, supply, salt);
 
-        const tokenNum = BigInt(token);
-        const pairedTokenNum = BigInt(pairedTokenAddress);
+		const tokenNum = BigInt(token);
+		const pairedTokenNum = BigInt(pairedTokenAddress);
 
-        if (tokenNum < pairedTokenNum) {
-            logger.info(`---------------------------------`);
-            logger.info(`Salt: ${salt}`);
-            logger.info(`Token: ${token}`);
-            logger.info(`---------------------------------`);
-            return { salt, token };
-        }
+		if (tokenNum < pairedTokenNum) {
+			logger.info(`---------------------------------`);
+			logger.info(`Salt: ${salt}`);
+			logger.info(`Token: ${token}`);
+			logger.info(`---------------------------------`);
+			return { salt, token };
+		}
 
-        i += BigInt(
-            Math.floor((crypto.getRandomValues(new Uint8Array(1))[0] ?? 0) % 1000) + 1
-        );
-    }
+		i += BigInt(Math.floor((crypto.getRandomValues(new Uint8Array(1))[0] ?? 0) % 1000) + 1);
+	}
 }
 
 // generateSalt(
