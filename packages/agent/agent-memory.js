@@ -25,10 +25,8 @@ async function appendToJsonFile(filePath, newData) {
         console.error(error);
     }
 
-    // Thêm dữ liệu mới vào mảng
     oldData.push(newData);
 
-    // Ghi lại vào file
     try {
         await fs.writeFile(filePath, JSON.stringify({Personality:character,History:oldData}, null, 2));
     } catch (error) {
@@ -65,9 +63,10 @@ export async function getHistoryChat(chat_id=""){
     const pathChat = `./packages/agent/chat-history/${chat_id}.json`;
     try{
         await fs.access(pathChat);
-        await appendToJsonFile(pathChat,{Personality:"",History:[]});
     } catch(error){
-        return []
+        await addHitoryChat(chat_id,{user:"Here is the start of conversation between user and agent",system:"Ok, I got it."});
+        return [new HumanMessage({content:"Here is the start of conversation between user and agent"}), new AIMessage({content : "Ok, I got it."})];
+        // return []
     }
     const data = await readJsonFile(pathChat);
     data["History"].forEach(element => {
@@ -95,3 +94,5 @@ export async function addHitoryChat(chat_id="",data){
 
 // const a = await getHistoryChat("test")
 // console.log(a)
+
+// await getHistoryChat("new5")

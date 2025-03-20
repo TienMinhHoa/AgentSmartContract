@@ -216,6 +216,7 @@ export async function setCharacter(personality="friendly"){
 
 export async function invokeAgent(id_thread="1",request="") {
 	const history = await getHistoryChat(id_thread)
+	console.log(history)
 
 	const llm = new ChatOpenAI({
 		apiKey: config.apiKey,
@@ -236,8 +237,9 @@ export async function invokeAgent(id_thread="1",request="") {
 	if (history && history.length >= 80){
 		return "This conservation is too long, please make another.";
 	}
-	request = `Pretend you are a ${character}.You have so much experience in blockchain as an expert.
-				You must response for user in a ${character} way this require: ${request}. With each request of user, if you lack of any information, require user provides.
+	request = `if user just communicate with you in normal way without any require, just response as a normal people. else:
+				Pretend you are a ${character}.You have so much experience in blockchain as an expert.
+				You must response for user in a ${character} way this promt from user: ${request}. With each request of user, if you lack of any information, require user provides.
 
 				After finish, describe what did you do`;
 		const cache = {user:request, system:""}
