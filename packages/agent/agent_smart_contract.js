@@ -259,4 +259,4 @@ export async function invokeAgent(id_thread="1",request="") {
 
 
 // AgentWakeUp("test2");
-invokeAgent("2","deploy a token with name ITACHI and symbol ITC")
+// invokeAgent("2","deploy a token with name ITACHI and symbol ITC")
